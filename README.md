@@ -1,68 +1,32 @@
 #IDValidator.js
 
-中国个人身份证号码验证器（JS版）
+Chinese Personal ID Card Validation for Javascript
 
-Chinese Personal ID Card Validation
-
-支持15位与18位身份证号
-
-支持 AMD/CMD/CommonJS, 或浏览器直接使用
-
+Support length 15 and 18.
 
 ##API
-`isValid()` 验证号码是否合法，合法返回true，不合法返回false
+`isValid()` Boolean Result of validation
 
-`getInfo()` 号码合法时返回分析信息（地区、出生日期、性别、校验位），不合法返回false
+`getInfo()` Return details of the ID(area/birthday/sex/validcode), false if invalidate.
 
-`makeID()` 伪造一个符合校验的ID
+`makeID()` Make a sample ID
 
 
 ##Getting Start
 
-###浏览器端直接使用
+###Flat
 ```html
 <script type="text/javascript" src="path/to/IDValidator/IDValidator.min.js" charset="utf-8" ></script>
 <script type="text/javascript" src="path/to/IDValidator/GB2260.min.js" charset="utf-8" ></script>
 <script type="text/javascript">
 
-    //新建普通实例
+    //New Instance
     var Validator = new IDValidator();
 
-    //或使用带地址码实例,需要引入GB2260
+    //New Instance with area check
     var Validator = new IDValidator( GB2260 );
 
 </script>
-```
-
-###AMD / RequireJS
-```javascript
-requirejs.config({
-    paths: {
-        IDValidator:'path/to/IDValidator',
-        GB2260:'path/to/GB2260'
-    }
-});
-require(["IDValidator","GB2260"], function(IDValidator,GB2260) {
-
-    var Validator = new IDValidator();
-
-    //或使用地址库
-    var Validator2 = new IDValidator( GB2260 );
-
-});
-
-```
-
-###CMD / SeaJS
-```javascript
-define(function(require, exports, module) {
-    var IDValidator = require('path/to/IDValidator');
-    var Validator = new IDValidator();
-
-    //或使用地址库
-    var GB2260 = require('path/to/GB2260');
-    var Validator2 = new IDValidator( GB2260 );
-});
 ```
 
 ###CommonJS / Node
@@ -72,73 +36,69 @@ var GB2260 = require('path/to/GB2260');
 
 var Validator = new IDValidator();
 
-//或使用地址库
+//with area check
 var Validator2 = new IDValidator( GB2260 );
 
 ```
+Tips: GB2260.js is optional.
 
-提示：所有API引入IDValidator.js就可以使用。
-
-GB2260.js为GB 2260地址码数据，用于分析地址信息，在实例化时传入，可以不使用。
-
-压缩后:
+Compressed:
 
 IDValidator.min.js 3K 
 
 GB2260.min.js 140K 
 
-##使用方法:
+##Sample:
 
-实例化查询器:
+Instance:
 ```js
 var Validator = new IDValidator();
 ```
-实例化时可传入GB2260，信息处理中将加入地址信息
+With GB2260
 ```js
 var Validator = new IDValidator( GB2260 );
 ```
 
-查询身份证号是否合法
+Validation
 ```js
-//JS中长数字有精度丢失问题, 请使用字符串传值
+//Please use string format
 var id = "123456789012345678";
 
 Validator.isValid( id );
-//合法号码return true, 不合法return false
+//true if verify.
 ```
-注:
+Tips:
 
-1. JS中长数字有精度丢失问题, 长数字请使用字符串传值
+1. Please use string format of ID
 
-2. 由于15位身份证号不含校验码，只能依据地址与日期是否存在进行判断
 
-获取身份证号信息
+Get ID info
 ```js
 Validator.getInfo( id );
 /* 
- * 号码有效时返回内容示例:
+ * Verified:
  * {
- *   'addrCode': 100101, //地址码信息,
- *   'addr':     '北京市东城区', //地址信息, 只在实例化时传入了GB2260时返回
- *   'birth':    '1988-01-20', //出生年月日
- *   'sex':      1, //性别，0为女，1为男
- *   'checkBit': 'X', //校验位，仅当18位时存在
- *   'length':   18 //身份证类型，15位或18位
+ *   'addrCode': 100101, //Area code,
+ *   'addr':     '北京市东城区', //area, with  GB2260
+ *   'birth':    '1988-01-20', //birthday
+ *   'sex':      1, //sex，0 for female，1 for male
+ *   'checkBit': 'X', //validate code，for length 18 ID
+ *   'length':   18 //ID type 15 or 18
  * }
  */
 ```
 
-伪造一个ID
+Make an ID
 ```js
-//制造一个18位ID
+//make an 18 ID
 var ID = Validator.makeID();
 
-//制造一个15位ID
+//make an 15 ID
 var ID = Validator.makeID( true );
 ```
-详见 [`examples`](https://github.com/mc-zone/IDValidator/tree/master/examples/) .
+More [`examples`](https://github.com/mc-zone/IDValidator/tree/master/examples/) .
 
-##参考资料
+##Links
 GB 11643-1999 公民身份证号码
 
 GB 2260-1995 中华人民共和国行政区划代码
